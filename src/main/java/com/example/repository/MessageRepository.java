@@ -5,10 +5,21 @@ import org.springframework.stereotype.Repository;
 
 import com.example.entity.Message;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer>{
+    
+    Optional<Message> findById(int id);
 
-    Message findById(int Id);
+    List<Message> findAll();
 
-    void saveMessage(Message message);
+    Message save(Message message);
+
+    boolean existsById(int id);
+
+    void deleteById(int id);
+
+    void delete(Message message);
 }
