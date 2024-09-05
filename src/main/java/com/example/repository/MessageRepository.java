@@ -13,6 +13,8 @@ public interface MessageRepository extends JpaRepository<Message, Integer>{
     
     Optional<Message> findById(int id);
 
+    List<Message> findByPostedBy(int postedBy);
+
     List<Message> findAll();
 
     Message save(Message message);

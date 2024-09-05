@@ -107,7 +107,8 @@ public class SocialMediaController {
     }
 
     @GetMapping("accounts/{accountId}/messages")
-    public ResponseEntity getMessageByAccount(@RequestBody Account outBody){
-        return ResponseEntity.status(500).body("Placeholder Endpoint");
+    public ResponseEntity getMessageByAccount(@PathVariable("accountId") int id){
+
+        return ResponseEntity.status(200).body(messageService.GetMessageByUserId(id));
     }
 }
