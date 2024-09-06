@@ -31,12 +31,6 @@ public class MessageService {
         return null;
     }
 
-    public void UpdateMessage(Message message, int id){
-        if(GetMessageById(id).isPresent() == true){
-            messageRepository.save(message);
-        }
-    }
-
     public Optional<Message> GetMessageById(int id){
         return messageRepository.findById(id);
     }

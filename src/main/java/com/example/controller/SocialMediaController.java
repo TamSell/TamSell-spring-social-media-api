@@ -93,17 +93,21 @@ public class SocialMediaController {
 
     @PatchMapping("messages/{messageId}")
     public ResponseEntity updateMessage(@RequestBody Message outBody, @PathVariable("messageId") int id){
-        if(outBody.getMessageText().length() > 254 || outBody.getMessageText().length() <= 0)
-        return ResponseEntity.status(400).body("Message is of incorrect size, must be above 0 or below 255 characters");
+        String outMessageText = outBody.getMessageText();
+        if(outMessageText.length() <= 0 || outMessageText.length() > 255) {
+            return ResponseEntity.status(400).body("Message is of incorrect length");
+        }
 
-    if(messageService.GetMessageById(id).isPresent() == false)
-        return ResponseEntity.status(400).body("Message Does not Exists");
-    
-    if(accountService.CheckAccountById(outBody.getPostedBy()) == false)
-        return ResponseEntity.status(400).body("User Does not Exists");
+        Optional<Message> optMessage = messageService.GetMessageById(id);
 
-    messageService.UpdateMessage(outBody, id);
-    return ResponseEntity.status(200).body(1);
+        if(!optMessage.isPresent()) {
+            return ResponseEntity.status(400).body("This message cannot be updated to databse as it does not exist");
+        }
+
+        Message outMessage = optMessage.get();
+        outMessage.setMessageText(outMessageText);
+        messageService.CreateMessage(outMessage);
+        return ResponseEntity.status(200).body(1);
     }
 
     @GetMapping("accounts/{accountId}/messages")
